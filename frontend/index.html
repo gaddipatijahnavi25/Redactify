@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PIIGuard — AI-Powered PII Redaction</title>
+  <meta name="description" content="Detect and redact PII from CSV, JSON, TXT, PDF, and image files automatically." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <span class="nav-logo">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L4 6v6c0 5.25 3.5 10.15 8 11.35C16.5 22.15 20 17.25 20 12V6L12 2z" fill="#4f8ef7" />
+      </svg>
+      PIIGuard
+    </span>
+    <div class="nav-right">
+      <span class="nav-live">Live</span>
+      <span class="nav-tag">AI-Powered</span>
+      <span class="nav-tag">Hackathon 2025</span>
+    </div>
+  </nav>
+
+  <div class="shell">
+
+    <!-- ── LEFT PANEL ─────────────────────────────────────────────────── -->
+    <aside class="left-panel">
+
+      <div class="hero">
+        <h1>Redact <span class="hl">PII</span><br>Instantly</h1>
+        <p class="hero-sub">Hybrid AI engine — regex patterns + spaCy NLP — detects and masks all personally
+          identifiable information before your data leaves your hands.</p>
+      </div>
+
+      <!-- Format cards -->
+      <div class="fmt-grid">
+        <div class="fmt-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M8 12h8M8 8h8M8 16h5" />
+          </svg><span>TXT</span></div>
+        <div class="fmt-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M3 9h18M3 15h18M9 3v18" />
+          </svg><span>CSV</span></div>
+        <div class="fmt-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+          </svg><span>JSON</span></div>
+        <div class="fmt-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <path d="M9 13h6M9 17h6" />
+          </svg><span>PDF</span></div>
+        <div class="fmt-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <polyline points="21 15 16 10 5 21" />
+          </svg><span>Image</span></div>
+      </div>
+
+      <!-- How it works -->
+      <div class="steps">
+        <p class="steps-lbl">How it works</p>
+        <div class="step"><span class="sn">1</span>Upload a file or paste text</div>
+        <div class="step"><span class="sn">2</span>Regex + spaCy NLP scans for PII</div>
+        <div class="step"><span class="sn">3</span>PII masked or visually blacked out</div>
+        <div class="step"><span class="sn">4</span>Download clean file + audit report</div>
+      </div>
+
+      <!-- Session history -->
+      <div class="history-box" id="historyBox">
+        <p class="steps-lbl">Recent Jobs</p>
+        <div id="histList">
+          <p class="hist-empty">No jobs yet</p>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ── RIGHT PANEL ────────────────────────────────────────────────── -->
+    <main class="right-panel">
+
+      <!-- Mode tabs -->
+      <div class="tabs">
+        <button class="tab active" id="tabFile" onclick="switchTab('file')">File Upload</button>
+        <button class="tab" id="tabText" onclick="switchTab('text')">Paste Text</button>
+        <div class="tab-scan">
+          <label class="toggle-lbl">
+            <input type="checkbox" id="scanOnly" />
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+            Scan only (no redaction)
+          </label>
+        </div>
+      </div>
+
+      <!-- ── FILE MODE ───────────────────────────────────────────────── -->
+      <div id="fileMode">
+        <div class="card upload-card">
+          <div class="dropzone" id="dropzone">
+            <div class="dz-icon">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                <polyline points="17 8 12 3 7 8" />
+                <line x1="12" y1="3" x2="12" y2="15" />
+              </svg>
+            </div>
+            <p class="dz-title">Drop your file here</p>
+            <p class="dz-sub">or <label class="link" for="fileInput">browse to upload</label></p>
+            <input type="file" id="fileInput" accept=".txt,.csv,.json,.pdf,.png,.jpg,.jpeg" hidden />
+            <p class="dz-hint">TXT · CSV · JSON · PDF · PNG · JPG · Max 50 MB</p>
+          </div>
+
+          <div class="file-bar hidden" id="fileBar">
+            <span class="file-ext" id="fileExt">TXT</span>
+            <div class="file-meta"><span class="file-name" id="fileName">—</span><span class="file-size"
+                id="fileSize">—</span></div>
+            <button class="clear-btn" id="clearBtn">&#x2715;</button>
+          </div>
+
+          <button class="btn-redact" id="redactBtn" disabled>
+            <span id="btnLabel">Detect &amp; Redact PII</span>
+            <span class="spinner hidden" id="spinner"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── TEXT MODE ──────────────────────────────────────────────── -->
+      <div id="textMode" class="hidden">
+        <div class="card text-card">
+          <textarea class="text-input" id="textInput"
+            placeholder="Paste your text here — emails, names, phone numbers, Aadhaar, PAN, SSN...&#10;&#10;Example: Contact John Smith at john@acme.com or call +91-9876543210.&#10;His Aadhaar: 1234 5678 9012 | PAN: ABCDE1234F"></textarea>
+          <div class="text-actions">
+            <button class="btn-sm" id="clearTextBtn">Clear</button>
+            <button class="btn-redact flex-1" id="redactTextBtn">
+              <span id="textBtnLabel">Detect &amp; Redact Text</span>
+              <span class="spinner hidden" id="textSpinner"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CONTROLS ──────────────────────────────────────────────── -->
+      <div class="card controls-card">
+        <p class="ctrl-title">Redaction Controls</p>
+        <div class="ctrl-row">
+
+          <div class="ctrl-group">
+            <label class="ctrl-lbl">Masking Style</label>
+            <div class="style-pills">
+              <button class="pill active" data-style="label" onclick="setStyle(this)">Label</button>
+              <button class="pill" data-style="stars" onclick="setStyle(this)">Stars</button>
+              <button class="pill" data-style="partial" onclick="setStyle(this)">Partial</button>
+            </div>
+            <p class="ctrl-hint" id="styleHint">Replaces with [ENTITY_TYPE]</p>
+          </div>
+
+          <div class="ctrl-group">
+            <label class="ctrl-lbl">Min Confidence &nbsp;<span class="ctrl-val" id="thrVal">0%</span></label>
+            <input type="range" class="slider" id="thrSlider" min="0" max="100" value="0" />
+          </div>
+
+          <div class="ctrl-group full-width">
+            <label class="ctrl-lbl">Redact Categories <span class="ctrl-hint">(all selected = redact
+                everything)</span></label>
+            <div class="cat-grid" id="catGrid"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div class="error-bar hidden" id="errorBar">
+        <span class="err-label">Error</span>
+        <span id="errorMsg">Something went wrong.</span>
+      </div>
+
+      <!-- ── RESULTS ─────────────────────────────────────────────────── -->
+      <div class="results hidden" id="results">
+
+        <div class="res-header">
+          <div>
+            <p class="res-title" id="resTitle">Redaction Complete</p>
+            <p class="res-meta" id="resMeta">—</p>
+          </div>
+          <div class="res-actions" id="resActions"></div>
+        </div>
+
+        <div class="stat-grid" id="statGrid"></div>
+
+        <div class="card diff-card hidden" id="diffCard">
+          <div class="diff-tabs">
+            <button class="dtab active" onclick="showDiff('side')">Side by Side</button>
+            <button class="dtab" onclick="showDiff('redacted')">Redacted</button>
+            <button class="dtab" onclick="showDiff('original')">Original</button>
+            <button class="copy-btn" id="copyBtn">Copy</button>
+          </div>
+          <div class="diff-body" id="diffBody"></div>
+        </div>
+
+        <div class="card tbl-card">
+          <div class="tbl-head">
+            <span class="tbl-title">Detected PII</span>
+            <span class="tbl-badge" id="tblBadge">0</span>
+          </div>
+          <div class="tbl-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Category</th>
+                  <th>Value</th>
+                  <th>Method</th>
+                  <th>Score</th>
+                </tr>
+              </thead>
+              <tbody id="piiBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card bk-card">
+          <p class="bk-title">Category Breakdown</p>
+          <div id="bkBars"></div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <footer class="footer">AI PII Redactor &nbsp;&middot;&nbsp; Built for Privacy &nbsp;&middot;&nbsp; 2025</footer>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
