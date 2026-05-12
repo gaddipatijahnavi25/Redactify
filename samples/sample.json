@@ -1,0 +1,35 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "name": "Ravi Kumar",
+            "contact": {
+                "email": "ravi.kumar@example.com",
+                "phone": "9876543210"
+            },
+            "identity": {
+                "aadhaar": "1234 5678 9012",
+                "pan": "ABCDE1234F",
+                "dob": "12/05/1990"
+            },
+            "bank": {
+                "account": "1234567890123456",
+                "ifsc": "HDFC0001234"
+            }
+        },
+        {
+            "id": 2,
+            "name": "John Doe",
+            "contact": {
+                "email": "john.doe@company.org",
+                "phone": "+1 (555) 867-5309"
+            },
+            "identity": {
+                "ssn": "123-45-6789",
+                "passport": "A1234567"
+            },
+            "ip_address": "192.168.1.100",
+            "note": "Contacted from https://example.com/profile/johndoe"
+        }
+    ]
+}
